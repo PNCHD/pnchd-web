@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+/* Section 1.2 brand colors — placeholder-level only, expect this to change
+   once real theming work happens. */
+@theme {
+  --color-navy: #1b2f5e;
+  --color-brand-red: #c0392b;
+  --color-app-bg: #f2f2f0;
+}
