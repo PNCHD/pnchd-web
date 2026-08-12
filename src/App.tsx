@@ -1,10 +1,29 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { BrowserRouter } from 'react-router-dom'
+
+import { RepositoryProvider } from './data/RepositoryProvider'
+import { AppRoutes } from './routing/AppRoutes'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Supabase errors are mostly permission or not-found, which retrying
+      // won't fix. One retry covers a transient network blip.
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+})
+
 function App() {
   return (
-    <div className="bg-app-bg flex min-h-screen flex-col items-center justify-center gap-2">
-      <h1 className="text-navy text-2xl font-bold">PNCHD</h1>
-      <p className="text-navy/70">Web dashboard — placeholder</p>
-      <span className="bg-brand-red mt-2 h-1 w-12 rounded-full" />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <RepositoryProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </RepositoryProvider>
+    </QueryClientProvider>
   )
 }
 
