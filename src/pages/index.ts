@@ -5,11 +5,6 @@ export const PricingPage = createPlaceholderPage(
   'Pricing',
   'Interactive module picker and live pricing calculator.',
 )
-export const SignupPage = createPlaceholderPage(
-  'Create your account',
-  'Organization setup and Stripe subscription. 30-day free trial, no card required.',
-)
-export const LoginPage = createPlaceholderPage('Log in')
 
 // Section 10.2 — contractor app
 export const DashboardPage = createPlaceholderPage(

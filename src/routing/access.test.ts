@@ -1,12 +1,18 @@
 import { describe, expect, it } from 'vitest'
 
 import type { Profile, ProfileRole } from '../types/profile'
-import { canAccessAdmin, hasWebAccess, isAdminPath, resolveAccess } from './access'
+import {
+  canAccessAdmin,
+  hasWebAccess,
+  isAdminPath,
+  needsOrganizationSetup,
+  resolveAccess,
+} from './access'
 
-function profile(role: ProfileRole): Profile {
+function profile(role: ProfileRole, organizationId: string | null = 'o1'): Profile {
   return {
     id: 'u1',
-    organizationId: 'o1',
+    organizationId,
     role,
     fullName: 'Test User',
     avatarUrl: null,
@@ -85,6 +91,59 @@ describe('client and driver roles', () => {
       type: 'redirect',
       to: '/mobile-only',
     })
+  })
+})
+
+describe('organization setup', () => {
+  it('sends a contractor with no org to setup', () => {
+    expect(resolveAccess(profile('owner', null), '/dashboard')).toEqual({
+      type: 'redirect',
+      to: '/welcome',
+    })
+    expect(resolveAccess(profile('pro', null), '/projects')).toEqual({
+      type: 'redirect',
+      to: '/welcome',
+    })
+  })
+
+  it('allows the setup page itself, avoiding a redirect loop', () => {
+    expect(resolveAccess(profile('owner', null), '/welcome')).toEqual({ type: 'allow' })
+  })
+
+  it('takes a contractor off setup once they have an org', () => {
+    expect(resolveAccess(profile('owner'), '/welcome')).toEqual({
+      type: 'redirect',
+      to: '/dashboard',
+    })
+  })
+
+  it('redirects an org-less contractor even from public paths', () => {
+    // Everything is unusable without an org — every org-scoped policy compares
+    // against one this user does not have.
+    expect(resolveAccess(profile('owner', null), '/pricing')).toEqual({
+      type: 'redirect',
+      to: '/welcome',
+    })
+  })
+
+  it('sends an org-less client to mobile-only, not setup', () => {
+    // Clients never create organizations; the contractor invites them.
+    expect(resolveAccess(profile('client', null), '/dashboard')).toEqual({
+      type: 'redirect',
+      to: '/mobile-only',
+    })
+  })
+
+  it('exempts platform_admin, which has no organization by design', () => {
+    expect(needsOrganizationSetup(profile('platform_admin', null))).toBe(false)
+    expect(resolveAccess(profile('platform_admin', null), '/admin')).toEqual({
+      type: 'allow',
+    })
+  })
+
+  it('needsOrganizationSetup is false once an org exists', () => {
+    expect(needsOrganizationSetup(profile('owner'))).toBe(false)
+    expect(needsOrganizationSetup(profile('owner', null))).toBe(true)
   })
 })
 

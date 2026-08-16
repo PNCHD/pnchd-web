@@ -19,6 +19,8 @@ export const ROUTES = {
   dashboard: '/dashboard',
   mobileOnly: '/mobile-only',
   admin: '/admin',
+  /** Org setup, for a signed-in contractor whose profile has no org yet. */
+  onboarding: '/welcome',
 } as const
 
 /** Reachable without a session. */
@@ -46,6 +48,11 @@ export function canAccessAdmin(role: ProfileRole): boolean {
   return role === 'platform_admin'
 }
 
+/** Signed in, but not yet attached to an organization. */
+export function needsOrganizationSetup(profile: Profile): boolean {
+  return profile.role !== 'platform_admin' && profile.organizationId === null
+}
+
 export type AccessDecision =
   | { type: 'allow' }
   | { type: 'redirect'; to: string }
@@ -69,6 +76,25 @@ export function resolveAccess(profile: Profile | null, path: string): AccessDeci
     return path === ROUTES.mobileOnly
       ? { type: 'allow' }
       : { type: 'redirect', to: ROUTES.mobileOnly }
+  }
+
+  // A contractor authenticated but not yet attached to an organization. The
+  // handle_new_user trigger creates the profile with organization_id NULL, so
+  // this is the normal state between clicking the magic link and finishing
+  // setup — not an error. Everything else is unusable until it's resolved:
+  // every org-scoped policy compares against an org this user doesn't have.
+  //
+  // platform_admin is exempt — that role is cross-org by nature and has no
+  // organization of its own.
+  if (needsOrganizationSetup(profile)) {
+    return path === ROUTES.onboarding
+      ? { type: 'allow' }
+      : { type: 'redirect', to: ROUTES.onboarding }
+  }
+
+  // Finished setup — no reason to sit on the setup page.
+  if (path === ROUTES.onboarding) {
+    return { type: 'redirect', to: ROUTES.dashboard }
   }
 
   // A signed-in contractor landing on login/signup goes to their dashboard;

@@ -3,6 +3,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 import { AuthRepository } from './authRepository'
 import { ModuleRepository } from './moduleRepository'
+import { OrganizationRepository } from './organizationRepository'
 import { ProfileRepository } from './profileRepository'
 
 /**
@@ -14,6 +15,7 @@ export interface Repositories {
   auth: AuthRepository
   profiles: ProfileRepository
   modules: ModuleRepository
+  organizations: OrganizationRepository
 }
 
 export function createRepositories(
@@ -23,9 +25,11 @@ export function createRepositories(
     auth: new AuthRepository(client),
     profiles: new ProfileRepository(client),
     modules: new ModuleRepository(client),
+    organizations: new OrganizationRepository(client),
   }
 }
 
 export { AuthRepository } from './authRepository'
 export { ModuleRepository } from './moduleRepository'
+export { OrganizationRepository } from './organizationRepository'
 export { ProfileRepository } from './profileRepository'

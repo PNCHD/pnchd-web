@@ -1,7 +1,9 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { NavLink, Outlet } from 'react-router-dom'
 
 import { useActiveModules } from '../auth/useActiveModules'
 import { useProfile } from '../auth/useProfile'
+import { useRepositories } from '../data/repositoryContext'
 import { canAccessAdmin } from '../routing/access'
 import { visibleNavItems } from '../routing/navigation'
 
@@ -12,7 +14,16 @@ import { visibleNavItems } from '../routing/navigation'
 export function AppLayout() {
   const { modules } = useActiveModules()
   const { profile } = useProfile()
+  const { auth } = useRepositories()
+  const queryClient = useQueryClient()
   const items = visibleNavItems(modules)
+
+  async function handleSignOut() {
+    await auth.signOut()
+    // Drop cached profile/module data so the next user can't briefly see the
+    // previous one's — the auth listener re-renders faster than a refetch.
+    queryClient.clear()
+  }
 
   return (
     <div className="bg-app-bg min-h-screen">
@@ -41,6 +52,9 @@ export function AppLayout() {
             <NavLink to="/settings/account" className="text-white/70">
               Settings
             </NavLink>
+            <button type="button" onClick={handleSignOut} className="text-white/70">
+              Sign out
+            </button>
           </div>
         </div>
       </header>

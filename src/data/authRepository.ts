@@ -29,6 +29,29 @@ export class AuthRepository {
     return () => data.subscription.unsubscribe()
   }
 
+  /**
+   * Sends a magic link. Doubles as signup: `shouldCreateUser` provisions the
+   * account on first use, so there is no separate register call.
+   *
+   * `role` goes into user metadata because the handle_new_user trigger reads it
+   * when creating the profiles row. It defaults to owner there, but passing it
+   * explicitly keeps the intent visible rather than relying on that default.
+   *
+   * The trigger leaves organization_id NULL — attaching an org is a separate
+   * step after first sign-in (see OrganizationRepository).
+   */
+  async sendMagicLink(email: string, redirectTo: string): Promise<void> {
+    const { error } = await this.client.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: redirectTo,
+        shouldCreateUser: true,
+        data: { role: 'owner' },
+      },
+    })
+    if (error) throw new Error(error.message)
+  }
+
   async signOut(): Promise<void> {
     const { error } = await this.client.auth.signOut()
     if (error) throw new Error(`sign out failed: ${error.message}`)

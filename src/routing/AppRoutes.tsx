@@ -2,6 +2,8 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { AppLayout } from '../components/AppLayout'
 import { LandingPage } from '../pages/LandingPage'
+import { LoginPage } from '../pages/LoginPage'
+import { OnboardingPage } from '../pages/OnboardingPage'
 import { MobileOnlyPage } from '../pages/MobileOnlyPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import {
@@ -18,14 +20,12 @@ import {
   FleetPage,
   InvoiceDetailPage,
   InvoicesPage,
-  LoginPage,
   PricingPage,
   ProjectDetailPage,
   ProjectsPage,
   ProposalDetailPage,
   ProposalsPage,
   SchedulingPage,
-  SignupPage,
   TeamSettingsPage,
 } from '../pages'
 import { RequireAccess } from './RequireAccess'
@@ -54,7 +54,15 @@ export function AppRoutes() {
         path="/signup"
         element={
           <RequireAccess>
-            <SignupPage />
+            <LoginPage />
+          </RequireAccess>
+        }
+      />
+      <Route
+        path="/welcome"
+        element={
+          <RequireAccess>
+            <OnboardingPage />
           </RequireAccess>
         }
       />
