@@ -11,14 +11,6 @@ export const DashboardPage = createPlaceholderPage(
   'Dashboard',
   'Active projects, recent activity, and unpaid invoices.',
 )
-export const ProjectsPage = createPlaceholderPage(
-  'Projects',
-  'Filter by status, search, and sort.',
-)
-export const ProjectDetailPage = createPlaceholderPage(
-  'Project detail',
-  'Timeline, documents, team, and invoices.',
-)
 export const SchedulingPage = createPlaceholderPage(
   'Scheduling',
   'Scheduling and timelines.',

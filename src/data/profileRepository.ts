@@ -1,6 +1,4 @@
-import type { SupabaseClient } from '@supabase/supabase-js'
-
-import { supabase } from '../lib/supabase'
+import { supabase, type TypedSupabaseClient } from '../lib/supabase'
 import { mapProfile, type Profile } from '../types/profile'
 
 /**
@@ -10,9 +8,9 @@ import { mapProfile, type Profile } from '../types/profile'
 export class ProfileRepository {
   // Explicit field rather than a constructor parameter property: the project's
   // tsconfig sets erasableSyntaxOnly, which disallows the shorthand.
-  private readonly client: SupabaseClient
+  private readonly client: TypedSupabaseClient
 
-  constructor(client: SupabaseClient = supabase) {
+  constructor(client: TypedSupabaseClient = supabase) {
     this.client = client
   }
 

@@ -1,6 +1,6 @@
-import type { Session, SupabaseClient } from '@supabase/supabase-js'
+import type { Session } from '@supabase/supabase-js'
 
-import { supabase } from '../lib/supabase'
+import { supabase, type TypedSupabaseClient } from '../lib/supabase'
 
 export type AuthStateListener = (session: Session | null) => void
 
@@ -10,9 +10,9 @@ export type AuthStateListener = (session: Session | null) => void
  * a fake session through.
  */
 export class AuthRepository {
-  private readonly client: SupabaseClient
+  private readonly client: TypedSupabaseClient
 
-  constructor(client: SupabaseClient = supabase) {
+  constructor(client: TypedSupabaseClient = supabase) {
     this.client = client
   }
 

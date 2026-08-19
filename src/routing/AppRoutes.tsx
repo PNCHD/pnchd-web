@@ -4,6 +4,8 @@ import { AppLayout } from '../components/AppLayout'
 import { LandingPage } from '../pages/LandingPage'
 import { LoginPage } from '../pages/LoginPage'
 import { OnboardingPage } from '../pages/OnboardingPage'
+import { ProjectsPage } from '../features/projects/ProjectsPage'
+import { ProjectDetailPage } from '../features/projects/ProjectDetailPage'
 import { MobileOnlyPage } from '../pages/MobileOnlyPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import {
@@ -21,8 +23,6 @@ import {
   InvoiceDetailPage,
   InvoicesPage,
   PricingPage,
-  ProjectDetailPage,
-  ProjectsPage,
   ProposalDetailPage,
   ProposalsPage,
   SchedulingPage,
