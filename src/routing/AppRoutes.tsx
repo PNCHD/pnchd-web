@@ -6,6 +6,10 @@ import { LoginPage } from '../pages/LoginPage'
 import { OnboardingPage } from '../pages/OnboardingPage'
 import { ProjectsPage } from '../features/projects/ProjectsPage'
 import { ProjectDetailPage } from '../features/projects/ProjectDetailPage'
+import { ProposalsPage } from '../features/billing/ProposalsPage'
+import { ProposalDetailPage } from '../features/billing/ProposalDetailPage'
+import { InvoicesPage } from '../features/billing/InvoicesPage'
+import { InvoiceDetailPage } from '../features/billing/InvoiceDetailPage'
 import { MobileOnlyPage } from '../pages/MobileOnlyPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import {
@@ -20,11 +24,7 @@ import {
   DocumentDetailPage,
   DocumentsPage,
   FleetPage,
-  InvoiceDetailPage,
-  InvoicesPage,
   PricingPage,
-  ProposalDetailPage,
-  ProposalsPage,
   SchedulingPage,
   TeamSettingsPage,
 } from '../pages'

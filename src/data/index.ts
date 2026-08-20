@@ -1,5 +1,6 @@
 import { supabase, type TypedSupabaseClient } from '../lib/supabase'
 import { AuthRepository } from './authRepository'
+import { BillingRepository } from './billingRepository'
 import { ModuleRepository } from './moduleRepository'
 import { OrganizationRepository } from './organizationRepository'
 import { ProjectRepository } from './projectRepository'
@@ -16,6 +17,7 @@ export interface Repositories {
   modules: ModuleRepository
   organizations: OrganizationRepository
   projects: ProjectRepository
+  billing: BillingRepository
 }
 
 export function createRepositories(
@@ -27,10 +29,12 @@ export function createRepositories(
     modules: new ModuleRepository(client),
     organizations: new OrganizationRepository(client),
     projects: new ProjectRepository(client),
+    billing: new BillingRepository(client),
   }
 }
 
 export { AuthRepository } from './authRepository'
+export { BillingRepository } from './billingRepository'
 export { ModuleRepository } from './moduleRepository'
 export { OrganizationRepository } from './organizationRepository'
 export { ProjectRepository } from './projectRepository'

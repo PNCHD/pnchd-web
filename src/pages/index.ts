@@ -15,22 +15,6 @@ export const SchedulingPage = createPlaceholderPage(
   'Scheduling',
   'Scheduling and timelines.',
 )
-export const ProposalsPage = createPlaceholderPage(
-  'Proposals',
-  'Create proposals and track approval status.',
-)
-export const ProposalDetailPage = createPlaceholderPage(
-  'Proposal detail',
-  'Line items, send to client, track approval.',
-)
-export const InvoicesPage = createPlaceholderPage(
-  'Invoices',
-  'Filter unpaid, overdue, and paid.',
-)
-export const InvoiceDetailPage = createPlaceholderPage(
-  'Invoice detail',
-  'Payment status and history.',
-)
 export const DocumentsPage = createPlaceholderPage(
   'Documents',
   'Upload and send for signing via Docuseal.',
