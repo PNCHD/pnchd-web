@@ -14,6 +14,22 @@ export class ProfileRepository {
     this.client = client
   }
 
+  /**
+   * Clients in the caller's organization, for pickers. No org filter — RLS
+   * already scopes profiles to the caller's org.
+   */
+  async listClients(): Promise<Profile[]> {
+    const { data, error } = await this.client
+      .from('profiles')
+      .select('id, organization_id, role, full_name, avatar_url, phone, is_active')
+      .eq('role', 'client')
+      .eq('is_active', true)
+      .order('full_name', { ascending: true })
+
+    if (error) throw new Error(`could not load clients: ${error.message}`)
+    return (data ?? []).map(mapProfile)
+  }
+
   async fetchById(userId: string): Promise<Profile | null> {
     const { data, error } = await this.client
       .from('profiles')
